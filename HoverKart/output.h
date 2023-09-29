@@ -1,23 +1,36 @@
 class output {
-  type = "Info Output" void activate() {
-    outputs::list.push_back(this);
+  type = "Info Output";
+
+protected:
+  bool check_crc(hover_feedback& fb) {
   }
+public:
   void setup() {
-    activate();
   }
   void loop() {
   }
-  bool check_crc(hover_feedback& fb) {
-  }
   void set(hover_feedback* fb_array) {
   }
-}
+};
 
 static class outputs {
   output null_output;
   std::vector<output*> list = { null_output };
 
-  void set_all(hover_feedback* fb_array) {
-
+public:
+  void activate(output* out) {
+    list.push_back(out);
   }
-}
+
+  void setup() {
+    for (const auto& o : list) o.setup();
+  }
+
+  void loop() {
+    for (const auto& o : list) o.loop();
+  }
+
+  void set_all(hover_feedback* fb_array) for (const auto& o : list) {
+    o.set(fb_array);
+  }
+};

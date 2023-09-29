@@ -13,7 +13,7 @@
 #include "web.h"
 
 void setup() {
-  logger::loop();
+  logger::setup();
   hover::setup();
   inputs::setup();
   outputs::setup();

@@ -25,11 +25,7 @@ static class hover {
   HardwareSerial ser2(2);
 
 #define SEND_STUFF write((uint8_t*)&cmd, sizeof(hover_command))
-  void send(hover_command& cmd) {
-    ser0.SEND_STUFF;
-    ser1.SEND_STUFF;
-    ser2.SEND_STUFF;
-  }
+
 
   typedef struct {
     std::array<char, sizeof(hover_feedback)> buf;
@@ -48,7 +44,7 @@ static class hover {
             bufs[n].idx = 0;
           break;
 
-        case sizeof(hover_feedback): //finished reading
+        case sizeof(hover_feedback):  //finished reading
           bufs[n].idx = -1;
           break;
 
@@ -60,22 +56,28 @@ static class hover {
     }
   }
 
+public:
+
+  void send(hover_command& cmd) {
+    ser0.SEND_STUFF;
+    ser1.SEND_STUFF;
+    ser2.SEND_STUFF;
+  }
+
   const hover_feedback* receive() {
     read_hoverser(ser0, 0);
     read_hoverser(ser1, 1);
     read_hoverser(ser2, 2);
     return &hover_feedback;
   }
-}
 
-void
-setup() {
-  ser0.begin(HOVER_BAUDRATE, SERIAL_8N1, SER0_PINS);
-  ser1.begin(HOVER_BAUDRATE, SERIAL_8N1, SER1_PINS);
-  ser2.begin(HOVER_BAUDRATE, SERIAL_8N1, SER2_PINS);
-}
-void loop() {
-  send(inputs::get_current());
-  outputs::set_all(receive());
-}
-}
+  void setup() {
+    ser0.begin(HOVER_BAUDRATE, SERIAL_8N1, SER0_PINS);
+    ser1.begin(HOVER_BAUDRATE, SERIAL_8N1, SER1_PINS);
+    ser2.begin(HOVER_BAUDRATE, SERIAL_8N1, SER2_PINS);
+  }
+  void loop() {
+    send(inputs::get_current());
+    outputs::set_all(receive());
+  }
+};

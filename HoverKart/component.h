@@ -1,4 +1,5 @@
 class component {
-  String name;
-  String type;
-}
+  public:
+    String name;
+    String type;
+};
