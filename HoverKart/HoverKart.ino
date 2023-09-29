@@ -1,5 +1,4 @@
 //libs (comonent specific ones are in respective files)
-#include <memory>
 #include <vector>
 
 //components
@@ -14,6 +13,9 @@
 #include "web.h"
 
 void setup() {
+  //does not run anything else
+  inputs.activate(&chuck_input);
+
   logger.setup();
   hover.setup();
   inputs.setup();

@@ -3,20 +3,17 @@ class output : public component {
 
 protected:
   bool check_sum(hover_feedback& fb) {
-    return true; //TODO
+    return true;  //TODO
   }
 public:
-  void setup() {
-  }
-  void loop() {
-  }
-  void set(const hover_feedback* fb_array) {
-  }
+  void setup() {}
+  void loop() {}
+  void set(const hover_feedback* fb_array) {}
 };
 
 class outputs_c {
   output null_output;
-  std::vector<output*> list = { null_output };
+  std::vector<output*> list = { };
 
 public:
   void activate(output* out) {

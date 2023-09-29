@@ -7,21 +7,13 @@ protected:
   }
 
 public:
-  void setup() {
-  }
-  void loop() {
-  }
-  hover_command get() {
-    hover_command cmd;
-    calc_crc(cmd);
-    return cmd;
-  }
+  void setup() {}
+  void loop() {}
+  hover_command get() {}
 };
 
 class inputs_c {
-  input null_input;
-  std::vector<input*> list = { null_input };
-  input* current_input = &null_input;
+  std::vector<input*> list = {};
 
 public:
   void activate(input* in) {
@@ -40,6 +32,17 @@ public:
   }
 
   const hover_command get_current() {
-    return current_input->get();
+    hover_command sum;
+
+    for (const auto& i : list) {
+      hover_command cmd = i->get();
+      sum.speed += cmd.speed;
+      sum.steer += cmd.steer;
+    }
+
+    sum.speed = constrain(sum.speed, -MAX_SPEED, MAX_SPEED);
+    sum.steer = constrain(sum.steer, -MAX_STEER, MAX_STEER);
+
+    return sum;
   }
 } inputs;

@@ -2,15 +2,12 @@
 class log_out : public component {
   //type = "Logging Output";
 public:
-  void setup() {
-  }
-  void print(String& str) {
-  }
+  void setup() {}
+  void print(String& str) {}
 };
 
 class logger_c {
-  log_out null_log;
-  std::vector<log_out*> list = { null_log };
+  std::vector<log_out*> list = { };
 
 public:
   void activate(log_out* lo) {
