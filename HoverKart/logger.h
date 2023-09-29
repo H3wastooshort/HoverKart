@@ -1,6 +1,6 @@
 //levels: Error Warning Info Debug
-class log_out : component {
-  type = "Logging Output";
+class log_out : public component {
+  //type = "Logging Output";
 public:
   void setup() {
   }
@@ -8,7 +8,7 @@ public:
   }
 };
 
-static class logger {
+class logger_c {
   log_out null_log;
   std::vector<log_out*> list = { null_log };
 
@@ -20,6 +20,6 @@ public:
   }
   void loop() {
   }
-  void log(component& comp, char level, String& msg) {
+  void log(const component* comp, const char level, const String& msg) {
   }
-};
+} logger;

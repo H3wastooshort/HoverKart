@@ -1,5 +1,5 @@
-class input : component {
-  type = "Input";
+class input : public component {
+  //type = "Input";
 
 protected:
   void calc_crc(hover_command& cmd) {
@@ -18,7 +18,7 @@ public:
   }
 };
 
-static class inputs {
+class inputs_c {
   input null_input;
   std::vector<input*> list = { null_input };
   input* current_input = &null_input;
@@ -29,17 +29,17 @@ public:
   }
 
   void setup() {
-    for (const auto& i : list) i.setup();
+    for (const auto& i : list) i->setup();
   }
 
   void loop() {
-    for (const auto& i : list) i.loop();
+    for (const auto& i : list) i->loop();
   }
 
   void switch_to(input*) {
   }
 
-  hover_command get_current() {
+  const hover_command get_current() {
     return current_input->get();
   }
-};
+} inputs;

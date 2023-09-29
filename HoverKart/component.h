@@ -1,5 +1,5 @@
 class component {
-  public:
-    String name;
-    String type;
+public:
+  String name = "Unknown";
+  String type = "Unknown";
 };

@@ -1,19 +1,20 @@
-class output {
-  type = "Info Output";
+class output : public component {
+  //type = "Info Output";
 
 protected:
-  bool check_crc(hover_feedback& fb) {
+  bool check_sum(hover_feedback& fb) {
+    return true; //TODO
   }
 public:
   void setup() {
   }
   void loop() {
   }
-  void set(hover_feedback* fb_array) {
+  void set(const hover_feedback* fb_array) {
   }
 };
 
-static class outputs {
+class outputs_c {
   output null_output;
   std::vector<output*> list = { null_output };
 
@@ -23,14 +24,16 @@ public:
   }
 
   void setup() {
-    for (const auto& o : list) o.setup();
+    for (const auto& o : list) o->setup();
   }
 
   void loop() {
-    for (const auto& o : list) o.loop();
+    for (const auto& o : list) o->loop();
   }
 
-  void set_all(hover_feedback* fb_array) for (const auto& o : list) {
-    o.set(fb_array);
+  void set_all(const hover_feedback* fb_array) {
+    for (const auto& o : list) {
+      o->set(fb_array);
+    }
   }
-};
+} outputs;

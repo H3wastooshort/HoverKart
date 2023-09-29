@@ -1,29 +1,15 @@
-typedef struct {
-  int16_t steer = 0;
-  int16_t speed = 0;
-  uint32_t crc;
-} hover_command;
+//some stuff taken from https://github.com/EFeru/hoverboard-firmware-hack-FOC/blob/main/Arduino/hoverserial/hoverserial.ino
+#include <HardwareSerial.h>
 
-typedef struct {
-  int16_t iSpeedL;  // 100* km/h
-  int16_t iSpeedR;  // 100* km/h
-  uint16_t iHallSkippedL;
-  uint16_t iHallSkippedR;
-  uint16_t iTemp;  // °C
-  uint16_t iVolt;  // 100* V
-  int16_t iAmpL;   // 100* A
-  int16_t iAmpR;   // 100* A
-  uint32_t crc;
-} hover_feedback;
+HardwareSerial ser0(0);
+HardwareSerial ser1(1);
+HardwareSerial ser2(2);
 
+class hover_c : public component {
+  //name = "HoverCtrl";
+  //type = "Hoverboard";
 
-#define START_FRAME 0xABCD
-static class hover {
 #define HOVER_BAUDRATE 115200
-  HardwareSerial ser0(0);
-  HardwareSerial ser1(1);
-  HardwareSerial ser2(2);
-
 #define SEND_STUFF write((uint8_t*)&cmd, sizeof(hover_command))
 
 
@@ -34,7 +20,7 @@ static class hover {
 
   hover_feedback_buf bufs[3];
   hover_feedback feedbacks[3];
-  void read_hoverser(Serial& ser, uint8_t n) {
+  void read_hoverser(Stream& ser, uint8_t n) {
     while (ser.available()) {
       static uint8_t ser_read_prev = 0;
       uint8_t ser_read_now = Serial.read();
@@ -58,7 +44,7 @@ static class hover {
 
 public:
 
-  void send(hover_command& cmd) {
+  void send(hover_command cmd) {
     ser0.SEND_STUFF;
     ser1.SEND_STUFF;
     ser2.SEND_STUFF;
@@ -68,7 +54,7 @@ public:
     read_hoverser(ser0, 0);
     read_hoverser(ser1, 1);
     read_hoverser(ser2, 2);
-    return &hover_feedback;
+    return feedbacks;
   }
 
   void setup() {
@@ -77,7 +63,7 @@ public:
     ser2.begin(HOVER_BAUDRATE, SERIAL_8N1, SER2_PINS);
   }
   void loop() {
-    send(inputs::get_current());
-    outputs::set_all(receive());
+    send(inputs.get_current());
+    outputs.set_all(receive());
   }
-};
+} hover;

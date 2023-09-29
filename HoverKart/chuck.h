@@ -1,7 +1,8 @@
 //input
 #include <Wire.h>
 #include <WiiChuck.h>  //https://github.com/madhephaestus/WiiChuck
-class chuck_input_c : input {
+class chuck_input_c : public input {
+  //name="Nunchuck";
   Accessory chuck;
 
 #define DEADZONE 4
@@ -15,8 +16,8 @@ public:
     Wire.begin(I2C_PINS);
     chuck.begin();
     chuck.type = NUNCHUCK;
-    if (chuck.readData()) logger::log(this, 'I', "OK");
-    else logger::log(this, 'W', "Not Found");
+    if (chuck.readData()) logger.log(this, 'I', "OK");
+    else logger.log(this, 'W', "Not Found");
   }
 
   hover_command get() {
@@ -26,11 +27,10 @@ public:
       cmd.steer = map(do_deadzone(chuck.getJoyX()), 0, 255, -MAX_STEER, MAX_STEER);
     } else {
       static uint8_t retry_count = 0;
-      if (retry_count == 0) this.setup();  //try setting chuck up for next time
+      if (retry_count == 0) this->setup();  //try setting chuck up for next time
       retry_count++;
     }
     calc_crc(cmd);
     return cmd;
   }
-};
-chuck_input_c chuck_input;
+} chuck_input;
