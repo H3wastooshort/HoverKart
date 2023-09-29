@@ -1,3 +1,4 @@
+//input
 #include <WiiChuck.h> //https://github.com/madhephaestus/WiiChuck
 class chuck_input_c : input {
 

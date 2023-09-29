@@ -17,6 +17,7 @@ typedef struct {
 } hover_feedback;
 
 
+#define START_FRAME 0xABCD
 static class hover {
 #define HOVER_BAUDRATE 115200
   HardwareSerial ser0(0);
@@ -32,9 +33,38 @@ static class hover {
 
   typedef struct {
     std::array<char, sizeof(hover_feedback)> buf;
-    uint16_t idx = 0;
+    int32_t idx = 0;
   } hover_feedback_buf;
-  std::unique_ptr<hover_feedback> receive() {
+
+  hover_feedback_buf bufs[3];
+  hover_feedback feedbacks[3];
+  void read_hoverser(Serial& ser, uint8_t n) {
+    while (ser.available()) {
+      static uint8_t ser_read_prev = 0;
+      uint8_t ser_read_now = Serial.read();
+      switch (bufs[n].idx) {
+        case -1:
+          if (((uint16_t)(ser_read_now) << 8) | ser_read_prev == START_FRAME)  //if start detected
+            bufs[n].idx = 0;
+          break;
+
+        case sizeof(hover_feedback): //finished reading
+          bufs[n].idx = -1;
+          break;
+
+        default:
+          bufs[n].buf[bufs[n].idx] = ser_read_now;
+          break;
+      }
+      ser_read_prev = ser_read_now;
+    }
+  }
+
+  const hover_feedback* receive() {
+    read_hoverser(ser0, 0);
+    read_hoverser(ser1, 1);
+    read_hoverser(ser2, 2);
+    return &hover_feedback;
   }
 }
 
