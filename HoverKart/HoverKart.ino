@@ -1,4 +1,4 @@
-//libs (comonent specific ones are in respective files)
+//libs (component specific ones are in respective files)
 #include <vector>
 
 //components
