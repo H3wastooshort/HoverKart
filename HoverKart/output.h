@@ -6,12 +6,10 @@ protected:
     return true;  //TODO
   }
 public:
-  void setup() {}
-  void loop() {}
   void set(const hover_feedback* fb_array) {}
 };
 
-class outputs_c {
+class outputs_c final {
   output null_output;
   std::vector<output*> list = { };
 

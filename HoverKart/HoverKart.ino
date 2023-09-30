@@ -7,15 +7,19 @@
 #include "component.h"
 #include "logger.h"
 #include "input.h"
-#include "chuck.h"
 #include "output.h"
+#include "debug_serial.h"
 #include "hover.h"
+#include "chuck.h"
 #include "web.h"
 
 void setup() {
-  //does not run anything else
+  //only registers components
   inputs.activate(&chuck_input);
+  logger.activate(&dserial_log);
+  outputs.activate(&dserial_out);
 
+  debug_serial_setup();
   logger.setup();
   hover.setup();
   inputs.setup();
@@ -27,4 +31,5 @@ void loop() {
   inputs.loop();
   hover.loop();
   outputs.loop();
+  yield();
 }

@@ -7,12 +7,13 @@ protected:
   }
 
 public:
-  void setup() {}
-  void loop() {}
-  hover_command get() {}
+  hover_command get() {
+    hover_command empty;
+    return empty;
+  }
 };
 
-class inputs_c {
+class inputs_c final {
   std::vector<input*> list = {};
 
 public:

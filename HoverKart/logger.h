@@ -2,12 +2,11 @@
 class log_out : public component {
   //type = "Logging Output";
 public:
-  void setup() {}
-  void print(String& str) {}
+  void log(const char* str, const char level) {}
 };
 
 class logger_c {
-  std::vector<log_out*> list = { };
+  std::vector<log_out*> list = {};
 
 public:
   void activate(log_out* lo) {
@@ -17,6 +16,9 @@ public:
   }
   void loop() {
   }
-  void log(const component* comp, const char level, const String& msg) {
+  void log(const component* comp, const char level, const char* msg) {
+    char buf[1024] = "";
+    snprintf(buf, sizeof(buf) - 1, "[%d][%c][%s][%s] %s", millis(), level, comp->type.c_str(), comp->name.c_str(), msg);
+    for (const auto& l : list) l->log(buf, level);
   }
 } logger;

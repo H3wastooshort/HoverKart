@@ -1,8 +1,7 @@
 //input
 #include <Wire.h>
 #include <WiiChuck.h>  //https://github.com/madhephaestus/WiiChuck
-class chuck_input_c : public input {
-  //name="Nunchuck";
+class chuck_input_c final : public input {
   Accessory chuck;
 
 #define DEADZONE 4
@@ -13,6 +12,8 @@ class chuck_input_c : public input {
 
 public:
   void setup() {
+    name = "Nunchuck";
+    type = "Input";
     Wire.begin(I2C_PINS);
     chuck.begin();
     chuck.type = NUNCHUCK;

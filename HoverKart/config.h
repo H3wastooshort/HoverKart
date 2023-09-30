@@ -1,9 +1,11 @@
-//Hoverboards
-//                RX,TX
-#define SER0_PINS 10, 11
-#define SER1_PINS 12, 13
-#define SER2_PINS 14, 15
-//               SDA, SCL
+//Debug UART      RX, TX
+#define SERd_PINS RX, TX
+#define SERd_BAUD 115200
+//Hoverboard UART RX, TX
+#define SER0_PINS 35, 18
+#define SER1_PINS 33, 19
+#define SER2_PINS 34, 23
+//OLED I2C        SDA, SCL
 #define I2C_PINS  16,  17
 
 #define MAX_SPEED 1000
