@@ -11,15 +11,16 @@
 #include "debug_serial.h"
 #include "hover.h"
 #include "chuck.h"
+#include "display.h"
 #include "web.h"
 
 void setup() {
   //only registers components
+  logger.activate(&debug_serial);
   inputs.activate(&chuck_input);
-  logger.activate(&dserial_log);
-  outputs.activate(&dserial_out);
+  outputs.activate(&debug_serial);
+  outputs.activate(&display);
 
-  debug_serial_setup();
   logger.setup();
   hover.setup();
   inputs.setup();
