@@ -11,8 +11,8 @@
 #include "debug_serial.h"
 #include "hover.h"
 #include "chuck.h"
-#include "display.h"
-#include "web.h"
+#include "oled_disp.h"
+#include "wifi_control.h"
 
 void setup() {
   //only registers components
