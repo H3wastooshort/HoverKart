@@ -4,13 +4,18 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-class display_c : public output {
+//why do i have to redefine these??
+#define SSD1306_BLACK 0    ///< Draw 'off' pixels
+#define SSD1306_WHITE 1    ///< Draw 'on' pixels
+#define SSD1306_INVERSE 2  ///< Invert pixels
+
+class oled_disp_c : public output {
   const uint8_t disp_x = 128;
   const uint8_t disp_y = 64;
   const uint8_t text_height = 8;
-  constexpr uint8_t line_height = text_height + 2;  //includes 2px padding at bottom
-  constexpr uint8_t char_per_line = disp_y / 6;     //y / char width
-  Adafruit_SSD1306 oled(disp_x, disp_y, &Wire, OLED_RST);
+  const uint8_t line_height = text_height + 2;  //includes 2px padding at bottom
+  const uint8_t char_per_line = disp_y / 6;     //y / char width
+  Adafruit_SSD1306 oled{ disp_x, disp_y, &Wire, OLED_RST };
   bool oled_ok;
 public:
   void setup() {
@@ -36,16 +41,16 @@ public:
     if (oled_ok) {
       oled.clearDisplay();
       for (uint8_t n = 0; n < 3; n++) {
-        uint8_t l1 = (font_height * n * 2);
-        uint8_t l2 = (font_height * ((n * 2) + 1));
+        uint8_t l1 = (text_height * n * 2);
+        uint8_t l2 = (text_height * ((n * 2) + 1));
         //status text
         oled.setCursor(0, l1);
         char buf[char_per_line + 1];
         snprintf(buf, char_per_line, "Board %u: Temp=%dC Vbat=%04.1f", n, fb_array[n].boardTemp, (float)fb_array[n].batVoltage / 100.0);
         //Battery Bar
-        oled.drawRect(0, l2, text_height, disp_y);
-        oled.fillRect(1, l2 + 1, text_height - 2, map(fb_array[n].batVoltage, 3400, 4000, 0, disp_y - 2));
+        oled.drawRect(0, l2, text_height, disp_y, SSD1306_WHITE);
+        oled.fillRect(1, l2 + 1, text_height - 2, map(fb_array[n].batVoltage, 3400, 4000, 0, disp_y - 2), SSD1306_WHITE);
       }
     }
   }
-} display;
+} oled_disp;

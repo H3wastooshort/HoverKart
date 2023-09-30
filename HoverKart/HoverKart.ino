@@ -19,7 +19,7 @@ void setup() {
   logger.activate(&debug_serial);
   inputs.activate(&chuck_input);
   outputs.activate(&debug_serial);
-  outputs.activate(&display);
+  outputs.activate(&oled_disp);
 
   logger.setup();
   hover.setup();
