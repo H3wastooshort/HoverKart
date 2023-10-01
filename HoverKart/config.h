@@ -13,5 +13,5 @@
 #define OLED_RST  27
 #define OLED_ADDR 0x3D
 //WiFi
-String ap_name = "HoverKart";
-String ap_pass = "bruh, insecure";
+const String ap_name = "HoverKart";
+const String ap_pass = "bruh, insecure";
