@@ -8,7 +8,7 @@
 
 #define WIFI_CTRL_TIMEOUT 500
 
-class wifi_control_c : public input, public output, public log_out {
+class wifi_control_c final : public input, public output, public log_out, public component {
   bool all_ok = true;
 
   AsyncWebServer srv{ 80 };
@@ -34,9 +34,9 @@ class wifi_control_c : public input, public output, public log_out {
         {
           AwsFrameInfo* info = (AwsFrameInfo*)arg;
           if (info->opcode == WS_TEXT) {
-            sscanf(data, "G%dS%d#", &last_cmd.speed, &last_cmd.steer);
+            sscanf((char*)data, "G%dS%d#", &last_cmd.speed, &last_cmd.steer);
           } else if (info->opcode == WS_BINARY) {
-            memcpy(&last_cmd, data, min(len, sizeof(hover_command)))
+            memcpy(&last_cmd, data, min(len, sizeof(hover_command)));
           }
         }
         break;
@@ -67,7 +67,7 @@ public:
   void loop() {
     static uint64_t last_housekeep = 0;
     if (millis() - last_housekeep > 5000) {
-      ws_srv->cleanupClients();
+      ws->cleanupClients();
       last_housekeep = millis();
     }
   }
