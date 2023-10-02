@@ -1,7 +1,7 @@
 //output, log_out
 #include <SoftwareSerial.h>  //https://github.com/plerup/espsoftwareserial
 
-class debug_serial_c final : public log_out, public output {
+class debug_serial_c final : public log_out, public output, public component {
   EspSoftwareSerial::UART ser;
   bool ran_setup = false;
 public:

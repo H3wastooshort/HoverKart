@@ -1,7 +1,7 @@
 //input
 #include <Wire.h>
 #include <WiiChuck.h>  //https://github.com/madhephaestus/WiiChuck
-class chuck_input_c final : public input {
+class chuck_input_c final : public input, public component {
   Accessory chuck;
 
 #define DEADZONE 4

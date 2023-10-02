@@ -34,7 +34,7 @@ class wifi_control_c final : public input, public output, public log_out, public
         {
           AwsFrameInfo* info = (AwsFrameInfo*)arg;
           if (info->opcode == WS_TEXT) {
-            sscanf((char*)data, "G%dS%d#", &last_cmd.speed, &last_cmd.steer);
+            sscanf((char*)data, "G%dS%d#", &(last_cmd.speed), &(last_cmd.steer));
           } else if (info->opcode == WS_BINARY) {
             memcpy(&last_cmd, data, min(len, sizeof(hover_command)));
           }
@@ -73,10 +73,9 @@ public:
   }
   void log(const char* str, const char level) {
     DynamicJsonDocument doc(4096);
-    const char* level_str[2] = { level, 0 };
     doc["type"] = "log";
     doc["uptime"] = millis();
-    doc["level"] = level_str;
+    doc["level"] = level;
     doc["message"] = str;
     uint16_t len = measureJson(doc);
     AsyncWebSocketMessageBuffer* buf = ws.makeBuffer(len);

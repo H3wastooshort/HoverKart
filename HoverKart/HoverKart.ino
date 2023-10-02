@@ -4,6 +4,7 @@
 //components
 #include "types.h"
 #include "config.h"
+#include "utils.h"
 #include "component.h"
 #include "logger.h"
 #include "input.h"
@@ -16,21 +17,24 @@
 
 void setup() {
   //only registers components
+  components.activate(&debug_serial);
+  components.activate(&hover);
+  components.activate(&chuck_input);
+  components.activate(&oled_disp);
+  components.activate(&wifi_control);
+
   logger.activate(&debug_serial);
   inputs.activate(&chuck_input);
   outputs.activate(&debug_serial);
   outputs.activate(&oled_disp);
+  outputs.activate(&wifi_control);
+  logger.activate(&wifi_control);
 
-  logger.setup();
-  hover.setup();
-  inputs.setup();
-  outputs.setup();
+
+  components.setup();
 }
 
 void loop() {
-  logger.loop();
-  inputs.loop();
-  hover.loop();
-  outputs.loop();
+  components.loop();
   yield();
 }

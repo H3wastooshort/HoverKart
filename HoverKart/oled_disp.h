@@ -9,7 +9,7 @@
 #define SSD1306_WHITE 1    ///< Draw 'on' pixels
 #define SSD1306_INVERSE 2  ///< Invert pixels
 
-class oled_disp_c : public output {
+class oled_disp_c final : public output, public component {
   const uint8_t disp_x = 128;
   const uint8_t disp_y = 64;
   const uint8_t text_height = 8;

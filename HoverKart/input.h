@@ -1,4 +1,4 @@
-class input : public component {
+class input {
   //type = "Input";
 
 protected:
@@ -19,14 +19,6 @@ class inputs_c final {
 public:
   void activate(input* in) {
     list.push_back(in);
-  }
-
-  void setup() {
-    for (const auto& i : list) i->setup();
-  }
-
-  void loop() {
-    for (const auto& i : list) i->loop();
   }
 
   void switch_to(input*) {

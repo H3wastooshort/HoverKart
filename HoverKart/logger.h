@@ -1,20 +1,16 @@
 //levels: Error Warning Info Debug
-class log_out : public component {
+class log_out {
   //type = "Logging Output";
 public:
   void log(const char* str, const char level) {}
 };
 
-class logger_c {
+class logger_c final : public component{
   std::vector<log_out*> list = {};
 
 public:
   void activate(log_out* lo) {
     list.push_back(lo);
-  }
-  void setup() {
-  }
-  void loop() {
   }
   void log(const component* comp, const char level, const char* msg) {
     char buf[1024] = "";

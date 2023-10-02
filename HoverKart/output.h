@@ -1,32 +1,23 @@
-class output : public component {
+class output {
   //type = "Info Output";
-
-protected:
-  bool check_sum(hover_feedback& fb) {
-    return true;  //TODO
-  }
 public:
   void set(const hover_feedback* fb_array) {}
 };
 
 class outputs_c final {
-  output null_output;
-  std::vector<output*> list = { };
+  std::vector<output*> list = {};
+
+  static void check_sum(hover_feedback& fb) {  //replace checksum with true/false
+    return;                             //TODO
+  }
 
 public:
   void activate(output* out) {
     list.push_back(out);
   }
 
-  void setup() {
-    for (const auto& o : list) o->setup();
-  }
-
-  void loop() {
-    for (const auto& o : list) o->loop();
-  }
-
   void set_all(const hover_feedback* fb_array) {
+    //fb_array_all(fb_array, check_sum);
     for (const auto& o : list) {
       o->set(fb_array);
     }
