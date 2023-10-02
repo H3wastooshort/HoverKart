@@ -67,15 +67,35 @@ public:
   void loop() {
     static uint64_t last_housekeep = 0;
     if (millis() - last_housekeep > 5000) {
-      ws->cleanupClients();
+      ws.cleanupClients();
       last_housekeep = millis();
     }
   }
   void log(const char* str, const char level) {
-    ws.textAll("");
+    DynamicJsonDocument doc(4096);
+    const char* level_str[2] = { level, 0 };
+    doc["type"] = "log";
+    doc["uptime"] = millis();
+    doc["level"] = level_str;
+    doc["message"] = str;
+    uint16_t len = measureJson(doc);
+    AsyncWebSocketMessageBuffer* buf = ws.makeBuffer(len);
+    serializeJson(doc, (char*)buf->get(), len);
+    ws.textAll(buf);
   }
   void set(const hover_feedback* fb_array) {
-    ws.textAll("");
+    DynamicJsonDocument doc(512);
+    doc["type"] = "info";
+    for (uint8_t i = 0; i < 3; i++) {
+      doc[i]["speed"]["left"] = fb_array[i].speedL_meas;
+      doc[i]["speed"]["right"] = fb_array[i].speedR_meas;
+      doc[i]["battery_voltage"] = float(fb_array[i].batVoltage) / 100.0;
+      doc[i]["board_temp"] = fb_array[i].boardTemp;
+    }
+    uint16_t len = measureJson(doc);
+    AsyncWebSocketMessageBuffer* buf = ws.makeBuffer(len);
+    serializeJson(doc, (char*)buf->get(), len);
+    ws.textAll(buf);
   }
   hover_command get() {
     if (millis() - last_cmd_millis > WIFI_CTRL_TIMEOUT) {
