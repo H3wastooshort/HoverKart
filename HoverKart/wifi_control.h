@@ -8,16 +8,16 @@
 
 #define WIFI_CTRL_TIMEOUT 500
 
-class wifi_control_c final : public input, public output, public log_out, public component {
+static class wifi_control_c final : public input, public output, public log_out, public component {
   bool all_ok = true;
 
   AsyncWebServer srv{ 80 };
   AsyncWebSocket ws{ "/ws" };
 
-  hover_command last_cmd;
-  uint64_t last_cmd_millis = 0;
+  static hover_command last_cmd;
+  static uint64_t last_cmd_millis;
 
-  void ws_event(AsyncWebSocket* ws_srv, AsyncWebSocketClient* cli, AwsEventType type, void* arg, uint8_t* data, size_t len) {
+  static void ws_event(AsyncWebSocket* ws_srv, AsyncWebSocketClient* cli, AwsEventType type, void* arg, uint8_t* data, size_t len) {
     switch (type) {
       case WS_EVT_CONNECT:
         {
@@ -35,8 +35,10 @@ class wifi_control_c final : public input, public output, public log_out, public
           AwsFrameInfo* info = (AwsFrameInfo*)arg;
           if (info->opcode == WS_TEXT) {
             sscanf((char*)data, "G%dS%d#", &(last_cmd.speed), &(last_cmd.steer));
+            last_cmd_millis = millis();
           } else if (info->opcode == WS_BINARY) {
             memcpy(&last_cmd, data, min(len, sizeof(hover_command)));
+            last_cmd_millis = millis();
           }
         }
         break;
@@ -45,6 +47,7 @@ class wifi_control_c final : public input, public output, public log_out, public
 
 public:
   void setup() {
+    last_cmd_millis = 0;
     name = "WiFi Control";
     type = "In;Out;Log";
     WiFi.mode(WIFI_AP);
@@ -75,7 +78,7 @@ public:
     DynamicJsonDocument doc(4096);
     doc["type"] = "log";
     doc["uptime"] = millis();
-    doc["level"] = level;
+    //doc["level"] = level;
     doc["message"] = str;
     uint16_t len = measureJson(doc);
     AsyncWebSocketMessageBuffer* buf = ws.makeBuffer(len);
