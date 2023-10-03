@@ -31,7 +31,9 @@ public:
       if (retry_count == 0) this->setup();  //try setting chuck up for next time
       retry_count++;
     }
-    calc_crc(cmd);
+    char buf[64];
+    to_cstr(buf,64,cmd);
+    logger.log(this, 'D', buf);
     return cmd;
   }
 } chuck_input;

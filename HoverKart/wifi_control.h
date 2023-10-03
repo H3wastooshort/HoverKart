@@ -1,7 +1,7 @@
 //input, output, log_out
 #include <WiFi.h>
-#include <AsyncTCP.h>           //https://github.com/me-no-dev/AsyncTCP
-#include <ESPAsyncWebServer.h>  //https://github.com/me-no-dev/ESPAsyncWebServer
+#include <AsyncTCP.h>           //https://github.com/me-no-dev/AsyncTCP or https://github.com/dvarrel/AsyncTCP
+#include <ESPAsyncWebServer.h>  //https://github.com/me-no-dev/ESPAsyncWebServer or https://github.com/dvarrel/ESPAsyncWebSrv
 #include <AsyncWebSocket.h>     //https://github.com/me-no-dev/ESPAsyncWebServer
 #include <ArduinoJson.h>        //https://arduinojson.org/
 #include <LittleFS.h>

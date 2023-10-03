@@ -1,11 +1,6 @@
 class input {
   //type = "Input";
 
-protected:
-  void calc_crc(hover_command& cmd) {
-    cmd.checksum = (uint16_t)(cmd.start ^ cmd.steer ^ cmd.speed);
-  }
-
 public:
   hover_command get() {
     hover_command empty;
@@ -15,6 +10,11 @@ public:
 
 class inputs_c final {
   std::vector<input*> list = {};
+
+  void calc_crc(hover_command& cmd) {
+    cmd.start = 0xABCD;
+    cmd.checksum = (uint16_t)(cmd.start ^ cmd.steer ^ cmd.speed);
+  }
 
 public:
   void activate(input* in) {
@@ -35,6 +35,7 @@ public:
 
     sum.speed = constrain(sum.speed, -MAX_SPEED, MAX_SPEED);
     sum.steer = constrain(sum.steer, -MAX_STEER, MAX_STEER);
+    calc_crc(sum);
 
     return sum;
   }

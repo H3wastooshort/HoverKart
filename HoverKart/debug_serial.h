@@ -8,11 +8,12 @@ public:
   void setup() {
     if (ran_setup) return;
     ser.begin(SERd_BAUD, EspSoftwareSerial::SWSERIAL_8N1, SERd_PINS, false);
+    ser.println(F("HoverKart"));
     //ser.setDebugOutput(true);
     ran_setup = true;
   }
   void log(const char* str, const char level) {
-    ser.print(str);
+    ser.println(str);
   }
   void set(const hover_feedback* fb_array) {
     ser.println();
