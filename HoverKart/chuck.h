@@ -6,7 +6,7 @@ class chuck_input_c final : public input, public component {
 
 #define DEADZONE 4
   uint8_t do_deadzone(uint8_t n) {
-    if (n < DEADZONE + 127 and 127 - DEADZONE > n) n = 0;
+    if (n < DEADZONE + 127 and 127 - DEADZONE > n) n = 127;
     return n;
   }
 
@@ -31,9 +31,11 @@ public:
       if (retry_count == 0) this->setup();  //try setting chuck up for next time
       retry_count++;
     }
+
     char buf[64];
     to_cstr(buf,64,cmd);
     logger.log(this, 'D', buf);
+    
     return vec_to_tank(cmd);
   }
 } chuck_input;
