@@ -14,7 +14,7 @@ static class wifi_control_c final : public input, public output, public log_out,
   AsyncWebServer srv{ 80 };
   AsyncWebSocket ws{ "/ws" };
 
-  static hover_command last_cmd;
+  static tank_command last_cmd;
   static uint64_t last_cmd_millis;
 
   static void ws_event(AsyncWebSocket* ws_srv, AsyncWebSocketClient* cli, AwsEventType type, void* arg, uint8_t* data, size_t len) {
@@ -34,10 +34,10 @@ static class wifi_control_c final : public input, public output, public log_out,
         {
           AwsFrameInfo* info = (AwsFrameInfo*)arg;
           if (info->opcode == WS_TEXT) {
-            sscanf((char*)data, "G%dS%d#", &(last_cmd.speed), &(last_cmd.steer));
+            sscanf((char*)data, "L%dR%d#", &(last_cmd.left), &(last_cmd.right));
             last_cmd_millis = millis();
           } else if (info->opcode == WS_BINARY) {
-            memcpy(&last_cmd, data, min(len, sizeof(hover_command)));
+            memcpy(&last_cmd, data, min(len, sizeof(last_cmd)));
             last_cmd_millis = millis();
           }
         }
@@ -99,10 +99,10 @@ public:
     serializeJson(doc, (char*)buf->get(), len);
     ws.textAll(buf);
   }
-  hover_command get() {
+  tank_command get() {
     if (millis() - last_cmd_millis > WIFI_CTRL_TIMEOUT) {
-      last_cmd.speed = 0;
-      last_cmd.steer = 0;
+      last_cmd.left = 0;
+      last_cmd.right = 0;
     }
     return last_cmd;
   }

@@ -21,8 +21,8 @@ public:
     else logger.log(this, 'W', "Not Found");
   }
 
-  hover_command get() override {
-    hover_command cmd;
+  tank_command get() override {
+    vector_command cmd;
     if (chuck.readData()) {
       cmd.speed = map(do_deadzone(chuck.getJoyY()), 0, 255, -MAX_SPEED, MAX_SPEED);
       cmd.steer = map(do_deadzone(chuck.getJoyX()), 0, 255, -MAX_STEER, MAX_STEER);
@@ -34,6 +34,6 @@ public:
     char buf[64];
     to_cstr(buf,64,cmd);
     logger.log(this, 'D', buf);
-    return cmd;
+    return vec_to_tank(cmd);
   }
 } chuck_input;

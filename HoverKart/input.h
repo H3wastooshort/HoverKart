@@ -2,8 +2,8 @@ class input {
   //type = "Input";
 
 public:
-  virtual hover_command get() {
-    hover_command empty;
+  virtual tank_command get() {
+    tank_command empty;
     return empty;
   }
 };
@@ -13,7 +13,7 @@ class inputs_c final {
 
   void calc_crc(hover_command& cmd) {
     cmd.start = 0xABCD;
-    cmd.checksum = (uint16_t)(cmd.start ^ cmd.steer ^ cmd.speed);
+    cmd.checksum = (uint16_t)(cmd.start ^ cmd.right ^ cmd.left);
   }
 
 public:
@@ -28,13 +28,13 @@ public:
     hover_command sum;
 
     for (const auto& i : list) {
-      hover_command cmd = i->get();
-      sum.speed += cmd.speed;
-      sum.steer += cmd.steer;
+      tank_command cmd = i->get();
+      sum.left += cmd.left;
+      sum.right += cmd.right;
     }
 
-    sum.speed = constrain(sum.speed, -MAX_SPEED, MAX_SPEED);
-    sum.steer = constrain(sum.steer, -MAX_STEER, MAX_STEER);
+    sum.left = constrain(sum.left, -MAX_SPEED, MAX_SPEED);
+    sum.right = constrain(sum.right, -MAX_SPEED, MAX_SPEED);
     calc_crc(sum);
 
     return sum;
