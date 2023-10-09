@@ -1,6 +1,7 @@
 //libs (component specific ones are in respective files)
 #include <vector>
 #include <memory>
+#include <cmath>
 
 //components
 #include "types.h"
