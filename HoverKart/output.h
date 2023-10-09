@@ -1,7 +1,7 @@
 class output {
   //type = "Info Output";
 public:
-  void set(const hover_feedback* fb_array) {}
+  virtual void set(const hover_feedback* fb_array) {}
 };
 
 class outputs_c final {

@@ -18,11 +18,11 @@
 
 void setup() {
   //only registers components
-  /*components.activate(&debug_serial);
+  components.activate(&debug_serial);
   components.activate(&hover);
   components.activate(&chuck_input);
   components.activate(&oled_disp);
-  components.activate(&wifi_control);*/
+  //components.activate(&wifi_control);
 
   logger.activate(&debug_serial);
   inputs.activate(&chuck_input);
@@ -31,22 +31,11 @@ void setup() {
   //outputs.activate(&wifi_control);
   //logger.activate(&wifi_control);
 
-  debug_serial.setup();
-  hover.setup();
-  chuck_input.setup();
-  oled_disp.setup();
-  //wifi_control.setup();
-
-  //components.setup();
+  components.setup();
 }
 
 void loop() {
-  debug_serial.loop();
-  chuck_input.loop();
-  hover.loop();
-  oled_disp.loop();
-  //wifi_control.loop();
 
-  //components.loop();
+  components.loop();
   yield();
 }

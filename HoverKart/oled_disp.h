@@ -18,7 +18,7 @@ class oled_disp_c final : public output, public component {
   Adafruit_SSD1306 oled{ disp_x, disp_y, &Wire, OLED_RST };
   bool oled_ok;
 public:
-  void setup() {
+  void setup() override {
     name = "OLED";
     type = "Info Output";
     Wire.begin(I2C_PINS);
@@ -37,7 +37,7 @@ public:
     oled.display();
   }
 
-  void set(const hover_feedback* fb_array) {
+  void set(const hover_feedback* fb_array) override {
     if (oled_ok) {
       oled.clearDisplay();
       for (uint8_t n = 0; n < 3; n++) {

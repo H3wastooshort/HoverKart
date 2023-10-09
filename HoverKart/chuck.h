@@ -11,7 +11,7 @@ class chuck_input_c final : public input, public component {
   }
 
 public:
-  void setup() {
+  void setup() override {
     name = "Nunchuck";
     type = "Input";
     Wire.begin(I2C_PINS);
@@ -21,7 +21,7 @@ public:
     else logger.log(this, 'W', "Not Found");
   }
 
-  hover_command get() {
+  hover_command get() override {
     hover_command cmd;
     if (chuck.readData()) {
       cmd.speed = map(do_deadzone(chuck.getJoyY()), 0, 255, -MAX_SPEED, MAX_SPEED);

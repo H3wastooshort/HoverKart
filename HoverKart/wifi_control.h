@@ -46,7 +46,7 @@ static class wifi_control_c final : public input, public output, public log_out,
   }
 
 public:
-  void setup() {
+  void setup() override {
     last_cmd_millis = 0;
     name = "WiFi Control";
     type = "In;Out;Log";
@@ -67,14 +67,14 @@ public:
     });
     srv.begin();
   }
-  void loop() {
+  void loop() override {
     static uint64_t last_housekeep = 0;
     if (millis() - last_housekeep > 5000) {
       ws.cleanupClients();
       last_housekeep = millis();
     }
   }
-  void log(const char* str, const char level) {
+  void log(const char* str, const char level) override {
     DynamicJsonDocument doc(4096);
     doc["type"] = "log";
     doc["uptime"] = millis();
@@ -85,7 +85,7 @@ public:
     serializeJson(doc, (char*)buf->get(), len);
     ws.textAll(buf);
   }
-  void set(const hover_feedback* fb_array) {
+  void set(const hover_feedback* fb_array) override {
     DynamicJsonDocument doc(512);
     doc["type"] = "info";
     for (uint8_t i = 0; i < 3; i++) {

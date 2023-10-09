@@ -2,7 +2,7 @@
 class log_out {
   //type = "Logging Output";
 public:
-  void log(const char* str, const char level) {}
+  virtual void log(const char* str, const char level) {}
 };
 
 class logger_c final : public component{

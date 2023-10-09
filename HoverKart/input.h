@@ -2,7 +2,7 @@ class input {
   //type = "Input";
 
 public:
-  hover_command get() {
+  virtual hover_command get() {
     hover_command empty;
     return empty;
   }

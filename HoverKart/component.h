@@ -2,8 +2,8 @@ class component {
 public:
   String name = "Unknown";
   String type = "Unknown";
-  void setup() {}
-  void loop() {}
+  virtual void setup() {}
+  virtual void loop() {}
 };
 
 class components_c final {
