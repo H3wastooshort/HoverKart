@@ -1,8 +1,8 @@
 //largely taken from https://github.com/EFeru/hoverboard-firmware-hack-FOC/blob/main/Arduino/hoverserial/hoverserial.ino
 
 struct vector_command {
-  int16_t speed = 0; //x axis
-  int16_t steer = 0; // y axis (like this for easier angle stuff)
+  int16_t speed = 0;  // y axis
+  int16_t steer = 0;  // x axis
 };
 struct tank_command {
   int16_t left = 0;
