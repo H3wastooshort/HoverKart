@@ -14,36 +14,8 @@ static class wifi_control_c final : public input, public output, public log_out,
   AsyncWebServer srv{ 80 };
   AsyncWebSocket ws{ "/ws" };
 
-  static tank_command last_cmd;
-  static uint64_t last_cmd_millis;
-
-  static void ws_event(AsyncWebSocket* ws_srv, AsyncWebSocketClient* cli, AwsEventType type, void* arg, uint8_t* data, size_t len) {
-    switch (type) {
-      case WS_EVT_CONNECT:
-        {
-        }
-        break;
-      case WS_EVT_DISCONNECT:
-      case WS_EVT_ERROR:
-        break;
-      case WS_EVT_PONG:
-        {
-        }
-        break;
-      case WS_EVT_DATA:
-        {
-          AwsFrameInfo* info = (AwsFrameInfo*)arg;
-          if (info->opcode == WS_TEXT) {
-            sscanf((char*)data, "L%dR%d#", &(last_cmd.left), &(last_cmd.right));
-            last_cmd_millis = millis();
-          } else if (info->opcode == WS_BINARY) {
-            memcpy(&last_cmd, data, min(len, sizeof(last_cmd)));
-            last_cmd_millis = millis();
-          }
-        }
-        break;
-    }
-  }
+  tank_command last_cmd;
+  uint64_t last_cmd_millis;
 
 public:
   void setup() override {
@@ -59,7 +31,33 @@ public:
     }
 
     LittleFS.begin();
-    ws.onEvent(ws_event);
+    ws.onEvent([&](AsyncWebSocket* ws_srv, AsyncWebSocketClient* cli, AwsEventType type, void* arg, uint8_t* data, size_t len) {
+      switch (type) {
+        case WS_EVT_CONNECT:
+          {
+          }
+          break;
+        case WS_EVT_DISCONNECT:
+        case WS_EVT_ERROR:
+          break;
+        case WS_EVT_PONG:
+          {
+          }
+          break;
+        case WS_EVT_DATA:
+          {
+            AwsFrameInfo* info = (AwsFrameInfo*)arg;
+            if (info->opcode == WS_TEXT) {
+              sscanf((char*)data, "L%dR%d#", &(last_cmd.left), &(last_cmd.right));
+              last_cmd_millis = millis();
+            } else if (info->opcode == WS_BINARY) {
+              memcpy(&last_cmd, data, min(len, sizeof(last_cmd)));
+              last_cmd_millis = millis();
+            }
+          }
+          break;
+      }
+    });
     srv.addHandler(&ws);
     srv.serveStatic("/", LittleFS, "/www/").setDefaultFile("index.htm");
     srv.onNotFound([](AsyncWebServerRequest* request) {
