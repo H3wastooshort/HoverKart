@@ -6,6 +6,11 @@ public:
     tank_command empty;
     return empty;
   }
+
+  virtual lns_command get_lns() {
+    lns_command empty;
+    return empty;
+  }
 };
 
 class inputs_c final {

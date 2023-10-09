@@ -11,7 +11,7 @@ struct tank_command {
 
 #define START_FRAME 0xABCD
 struct hover_command {
-  uint16_t start;
+  uint16_t start = START_FRAME;
   int16_t left = 0;
   int16_t right = 0;
   uint16_t checksum;
@@ -26,4 +26,9 @@ struct hover_feedback {
   int16_t boardTemp;
   uint16_t cmdLed;
   uint16_t checksum;
+};
+
+struct lns_command {
+  bool horn = 0;
+  bool lights = 0;
 };

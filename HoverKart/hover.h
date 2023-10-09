@@ -66,8 +66,9 @@ public:
     ser2.begin(HOVER_BAUDRATE, SERIAL_8N1, SER2_PINS);
     ser2.setDebugOutput(false);
   }
+
+  uint64_t last_ctrl_millis = 0;
   void loop() {
-    static uint64_t last_ctrl_millis = 0;
     if (millis() - last_ctrl_millis > HOVER_CTRL_INTERVAL) {
       last_ctrl_millis = millis();
       send(inputs.get_current());

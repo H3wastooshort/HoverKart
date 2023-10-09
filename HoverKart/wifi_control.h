@@ -15,7 +15,9 @@ static class wifi_control_c final : public input, public output, public log_out,
   AsyncWebSocket ws{ "/ws" };
 
   tank_command last_cmd;
-  uint64_t last_cmd_millis;
+  uint64_t last_cmd_millis = 0;
+  lns_command last_lns_cmd;
+  uint64_t last_lns_cmd_millis = 0;
 
 public:
   void setup() override {
@@ -48,8 +50,21 @@ public:
           {
             AwsFrameInfo* info = (AwsFrameInfo*)arg;
             if (info->opcode == WS_TEXT) {
-              sscanf((char*)data, "L%dR%d#", &(last_cmd.left), &(last_cmd.right));
-              last_cmd_millis = millis();
+              switch ((char)data[0]) {
+                case 'T':
+                  sscanf((char*)data, "T:L%dR%d#", &(last_cmd.left), &(last_cmd.right));
+                  last_cmd_millis = millis();
+                  break;
+                case 'N':
+                  //Format: "N:hl" //h and l control light and horn lowercase means off, upper on
+                  last_lns_cmd.horn = data[2] == 'H';
+                  last_lns_cmd.lights = data[3] == 'L';
+                  last_lns_cmd_millis = millis();
+                  break;
+                default:
+                  logger.log(this, 'D', "Unknown WS text cmd");
+                  break;
+              }
             } else if (info->opcode == WS_BINARY) {
               memcpy(&last_cmd, data, min(len, sizeof(last_cmd)));
               last_cmd_millis = millis();
@@ -97,11 +112,18 @@ public:
     serializeJson(doc, (char*)buf->get(), len);
     ws.textAll(buf);
   }
-  tank_command get() {
+  tank_command get() override {
     if (millis() - last_cmd_millis > WIFI_CTRL_TIMEOUT) {
       last_cmd.left = 0;
       last_cmd.right = 0;
     }
     return last_cmd;
+  }
+  lns_command get_lns() override {
+    if (millis() - last_lns_cmd_millis > WIFI_CTRL_TIMEOUT * 4) {
+      last_lns_cmd.horn = 0;
+      last_lns_cmd.lights = 0;
+    }
+    return last_lns_cmd;
   }
 } wifi_control;

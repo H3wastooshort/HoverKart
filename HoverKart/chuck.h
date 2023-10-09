@@ -2,6 +2,8 @@
 #include <Wire.h>
 #include <WiiChuck.h>  //https://github.com/madhephaestus/WiiChuck
 class chuck_input_c final : public input, public component {
+  bool has_chuck = true;
+
   Accessory chuck;
 
   //TODO autocal
@@ -24,10 +26,24 @@ public:
     chuck.begin();
     chuck.type = NUNCHUCK;
     if (chuck.readData()) logger.log(this, 'I', "OK");
-    else logger.log(this, 'W', "Not Found");
+    else {
+      logger.log(this, 'W', "Not Found");
+      has_chuck = false;
+    }
+  }
+
+  lns_command get_lns() override {
+    lns_command lns;  //inits to 0
+    if (!has_chuck) return lns;
+    
+    lns.horn = chuck.getButtonC();
+    return lns;
   }
 
   tank_command get() override {
+    tank_command tcmd;  //inits to 0
+    if (!has_chuck) return tcmd;
+
     vector_command cmd;
     static uint8_t retry_count = 0;
     if (chuck.readData()) {  //data ok
@@ -56,8 +72,7 @@ public:
       retry_count++;
     }
 
-
-    tank_command tcmd = vec_to_tank(cmd);
+    tcmd = vec_to_tank(cmd);
 
     char buf[64];
     to_cstr(buf, 64, cmd);

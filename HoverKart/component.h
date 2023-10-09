@@ -7,13 +7,13 @@ public:
 };
 
 class components_c final {
-  std::vector<component*> list = { };
+  std::vector<component*> list = {};
 
 public:
   void activate(component* out) {
     list.push_back(out);
   }
-
+  
   void setup() {
     for (const auto& c : list) c->setup();
   }
