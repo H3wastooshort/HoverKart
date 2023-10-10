@@ -16,10 +16,10 @@ public:
 class inputs_c final : public component {
   std::vector<input*> list = {};
 
-  /*void calc_crc(hover_command& cmd) {
+  void calc_crc(hover_command& cmd) {
     cmd.start = 0xABCD;
     cmd.checksum = (uint16_t)(cmd.start ^ cmd.right ^ cmd.left);
-  }*/
+  }
 
 public:
   void activate(input* in) {
@@ -40,10 +40,8 @@ public:
 
     sum.left = constrain(sum.left, -MAX_SPEED, MAX_SPEED);
     sum.right = constrain(sum.right, -MAX_SPEED, MAX_SPEED);
-    
-    //calc_crc(sum);
-    sum.start = 0xABCD;
-    sum.checksum = (uint16_t)(sum.start ^ sum.right ^ sum.left);
+
+    calc_crc(sum);
 
     char buf[64];
     to_cstr(buf, 64, sum);

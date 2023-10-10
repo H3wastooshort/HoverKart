@@ -74,11 +74,11 @@ public:
 
     tcmd = vec_to_tank(cmd);
 
-    /*char buf[64];
+    char buf[64];
     to_cstr(buf, 64, cmd);
     logger.log(this, 'D', buf);
     to_cstr(buf, 64, tcmd);  //different overload
-    logger.log(this, 'D', buf);*/
+    logger.log(this, 'D', buf);
 
     return tcmd;
   }

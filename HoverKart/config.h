@@ -13,8 +13,8 @@
 #define OLED_RST  2
 #define OLED_ADDR 0x3D
 //Lights 'n Sounds
-#define LIGHTS_PIN 0
-#define HORN_PIN 2
+//#define LIGHTS_PIN 0
+//#define HORN_PIN 2
 //WiFi
 const String ap_name = "HoverKart";
 const String ap_pass = "bruh, insecure";
