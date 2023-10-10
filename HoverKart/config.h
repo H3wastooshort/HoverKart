@@ -7,8 +7,8 @@
 #define SER2_PINS 23, 5
 #define MAX_SPEED 10
 #define INVERT_AXIS_1 true
-#define INVERT_AXIS_2 false
-#define INVERT_AXIS_3 true 
+#define INVERT_AXIS_2 true
+#define INVERT_AXIS_3 false 
 //I2C            SDA,SCL
 #define I2C_PINS  21, 22
 //OLED
