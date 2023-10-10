@@ -4,10 +4,10 @@
 }*/
 
 void to_cstr(char* buf, size_t len, vector_command cmd) {
-  snprintf(buf, len - 1, "Gas: %+04d, Steer: %+04d", cmd.speed, cmd.steer);
+  snprintf(buf, len - 1, "Gas: %+06.2f, Steer: %+06.2f", cmd.speed, cmd.steer);
 }
 void to_cstr(char* buf, size_t len, tank_command cmd) {
-  snprintf(buf, len - 1, "Left: %+04d, Right: %+04d", cmd.left, cmd.right);
+  snprintf(buf, len - 1, "Left: %+06.2f, Right: %+06.2f", cmd.left, cmd.right);
 }
 void to_cstr(char* buf, size_t len, hover_command cmd) {
   snprintf(buf, len - 1, "Start: 0x%04X, Left: %+04d, Right: %+04d, CRC: 0x%04X", cmd.start, cmd.left, cmd.right, cmd.checksum);
@@ -21,10 +21,10 @@ tank_command vec_to_tank(vector_command vcmd) {
   tank_command tcmd;
   if (vcmd.speed == 0 and vcmd.steer == 0) return tcmd;
 
-  float magnitude = std::sqrt(std::pow(vcmd.speed, 2) + std::pow(vcmd.steer, 2));
-  float steer = (vcmd.steer / magnitude);
+  float magnitude = std::sqrt(std::pow(vcmd.speed, 2.0) + std::pow(vcmd.steer, 2.0));
+  float steer = std::abs(vcmd.steer / magnitude);
 
-  tcmd.left = magnitude * -steer;
-  tcmd.right = magnitude * steer;
+  tcmd.left = magnitude;
+  tcmd.right = magnitude;
   return tcmd;
 }

@@ -1,12 +1,12 @@
 //largely taken from https://github.com/EFeru/hoverboard-firmware-hack-FOC/blob/main/Arduino/hoverserial/hoverserial.ino
 
 struct vector_command {
-  int16_t speed = 0;  // y axis
-  int16_t steer = 0;  // x axis
+  float speed = 0;  // y axis
+  float steer = 0;  // x axis
 };
 struct tank_command {
-  int16_t left = 0;
-  int16_t right = 0;
+  float left = 0;
+  float right = 0;
 };
 
 #define START_FRAME 0xABCD

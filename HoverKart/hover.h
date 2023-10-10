@@ -41,11 +41,36 @@ class hover_c final : public component {
     }
   }
 
-public:
+  void calc_crc(hover_command& cmd) {
+    cmd.start = 0xABCD;
+    cmd.checksum = (uint16_t)(cmd.start ^ cmd.right ^ cmd.left);
+  }
+
+  void tcmd_to_cmd(tank_command& tcmd, hover_command& cmd, bool invert) {
+    cmd.left = tcmd.left * MAX_SPEED;
+    cmd.right = tcmd.right * MAX_SPEED;
+    if (invert) {
+      tcmd.left *= -1;
+      tcmd.right *= -1;
+    }
+    calc_crc(cmd);
+  }
+
 #define SEND_STUFF write((uint8_t*)&cmd, sizeof(hover_command))
-  void send(hover_command cmd) {
+  void send(tank_command tcmd) {
+    hover_command cmd;
+
+    tcmd_to_cmd(tcmd, cmd, INVERT_AXIS_1);
     ser0.SEND_STUFF;
+
+    char buf[64];
+    to_cstr(buf, 64, cmd);
+    logger.log(this, 'D', buf);
+
+    tcmd_to_cmd(tcmd, cmd, INVERT_AXIS_2);
     ser1.SEND_STUFF;
+
+    tcmd_to_cmd(tcmd, cmd, INVERT_AXIS_3);
     ser2.SEND_STUFF;
   }
 
@@ -71,8 +96,8 @@ public:
   void loop() {
     if (millis() - last_ctrl_millis > HOVER_CTRL_INTERVAL) {
       last_ctrl_millis = millis();
-      hover_command cmd = inputs.get_current();
-      send(cmd);
+      tank_command tcmd = inputs.get_current();
+      send(tcmd);
     }
 
     /*receive();
