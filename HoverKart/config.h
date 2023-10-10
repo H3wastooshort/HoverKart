@@ -1,6 +1,6 @@
 //Debug UART      RX, TX
 #define SERd_PINS RX, TX
-#define SERd_BAUD 115200
+#define SERd_BAUD 9600
 //Hoverboard UART RX, TX
 #define SER0_PINS 27, 25
 #define SER1_PINS 18, 19

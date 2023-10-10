@@ -71,14 +71,15 @@ public:
   void loop() {
     if (millis() - last_ctrl_millis > HOVER_CTRL_INTERVAL) {
       last_ctrl_millis = millis();
-      send(inputs.get_current());
+      hover_command cmd = inputs.get_current();
+      send(cmd);
     }
 
-    receive();
+    /*receive();
     static uint64_t last_info_millis = 0;
     if (millis() - last_info_millis > HOVER_INFO_INTERVAL) {
       last_info_millis = millis();
       outputs.set_all(feedbacks);
-    }
+    }*/
   }
 } hover;

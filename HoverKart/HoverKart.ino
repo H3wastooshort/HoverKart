@@ -43,10 +43,8 @@ void setup() {
   components.setup();
 }
 
-bool blink = false;
-void loop() {
-  digitalWrite(LED_BUILTIN, blink);
-  blink = !blink;
 
+void loop() {
   components.loop();
+  debug_serial.ser.println("loop");
 }

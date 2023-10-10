@@ -2,9 +2,9 @@
 #include <SoftwareSerial.h>  //https://github.com/plerup/espsoftwareserial
 
 class debug_serial_c final : public log_out, public output, public component {
-  EspSoftwareSerial::UART ser;
   bool ran_setup = false;
 public:
+  EspSoftwareSerial::UART ser;
   void setup() override {
     if (ran_setup) return;
     ser.begin(SERd_BAUD, EspSoftwareSerial::SWSERIAL_8N1, SERd_PINS, false);
