@@ -77,6 +77,7 @@ public:
     receive();
     static uint64_t last_info_millis = 0;
     if (millis() - last_info_millis > HOVER_INFO_INTERVAL) {
+      last_info_millis = millis();
       outputs.set_all(feedbacks);
     }
   }

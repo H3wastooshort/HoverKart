@@ -10,7 +10,7 @@ void to_cstr(char* buf, size_t len, tank_command cmd) {
   snprintf(buf, len - 1, "Left: %+04d, Right: %+04d", cmd.left, cmd.right);
 }
 void to_cstr(char* buf, size_t len, hover_command cmd) {
-  snprintf(buf, len - 1, "Left: %+04d, Right: %+04d, CRC: 0x%04X", cmd.left, cmd.right, cmd.checksum);
+  snprintf(buf, len - 1, "Start: 0x%04X, Left: %+04d, Right: %+04d, CRC: 0x%04X", cmd.start, cmd.left, cmd.right, cmd.checksum);
 }
 
 float mapf(float x, float in_min, float in_max, float out_min, float out_max) {
@@ -19,6 +19,8 @@ float mapf(float x, float in_min, float in_max, float out_min, float out_max) {
 
 tank_command vec_to_tank(vector_command vcmd) {
   tank_command tcmd;
+  if (vcmd.speed == 0 and vcmd.steer == 0) return tcmd;
+
   float magnitude = std::sqrt(std::pow(vcmd.speed, 2) + std::pow(vcmd.steer, 2));
   float steer = (vcmd.steer / magnitude);
 
