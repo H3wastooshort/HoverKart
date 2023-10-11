@@ -21,10 +21,16 @@ tank_command vec_to_tank(vector_command vcmd) {
   tank_command tcmd;
   if (vcmd.speed == 0 and vcmd.steer == 0) return tcmd;
 
-  float magnitude = std::sqrt(std::pow(vcmd.speed, 2.0) + std::pow(vcmd.steer, 2.0));
-  float angle = std::cos(vcmd.steer);
+  float magnitude = (std::sqrt(std::pow(vcmd.speed, 2.0) + std::pow(vcmd.steer, 2.0))) / std::sqrt(2.0);
+  float angle = 0;
+  if (vcmd.steer != 0) std::atan(vcmd.speed / vcmd.steer) / (2 * PI);
 
-  tcmd.left = magnitude * angle;
-  tcmd.right = magnitude * angle;
+  if (angle > 0) {
+    tcmd.left = magnitude * -(1 - angle);
+    tcmd.right = magnitude * (1 - angle);
+  } else {
+    tcmd.left = magnitude * (1 - angle);
+    tcmd.right = magnitude * -(1 - angle);
+  }
   return tcmd;
 }
