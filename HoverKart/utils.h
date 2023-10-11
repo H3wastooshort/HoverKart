@@ -17,20 +17,21 @@ float mapf(float x, float in_min, float in_max, float out_min, float out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
+constexpr float sqrt_of_two = sqrt(2.0);
 tank_command vec_to_tank(vector_command vcmd) {
   tank_command tcmd;
   if (vcmd.speed == 0 and vcmd.steer == 0) return tcmd;
 
-  float magnitude = (std::sqrt(std::pow(vcmd.speed, 2.0) + std::pow(vcmd.steer, 2.0))) / std::sqrt(2.0);
+  float magnitude = (std::sqrt(std::pow(vcmd.speed, 2.0) + std::pow(vcmd.steer, 2.0))) / sqrt_of_two;
   float angle = 0;
-  if (vcmd.steer != 0) std::atan(vcmd.speed / vcmd.steer) / (2 * PI);
+  if (vcmd.steer != 0) std::atan2(vcmd.speed, vcmd.steer);
 
-  if (angle > 0) {
-    tcmd.left = magnitude * -(1 - angle);
-    tcmd.right = magnitude * (1 - angle);
+  if (vcmd.steer > 0) {
+    tcmd.left = magnitude * -std::cos(angle);
+    tcmd.right = magnitude * std::cos(angle);
   } else {
-    tcmd.left = magnitude * (1 - angle);
-    tcmd.right = magnitude * -(1 - angle);
+    tcmd.left = magnitude * std::cos(angle);
+    tcmd.right = magnitude * -std::cos(angle);
   }
   return tcmd;
 }
