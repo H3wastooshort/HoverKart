@@ -1,0 +1,26 @@
+html, body, #container {
+    height: 100%;
+    width: 100%;
+    margin: auto;
+}
+
+body, #logs {
+	color: white;
+	background: black;
+}
+
+#joystick,#controls,#logs {
+	display: block;
+	width: 100%;
+}
+
+#joystick, #logs {
+	border: 4px solid white;
+}
+
+#joystick {
+	border-radius: 50%;
+	width: calc(min(75vh,75vw));
+	height: calc(min(75vh,75vw));
+	margin: auto;
+}
