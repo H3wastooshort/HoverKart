@@ -32,7 +32,7 @@ public:
       return;
     }
 
-    LittleFS.begin();
+    LittleFS.begin(true);
     ws.onEvent([&](AsyncWebSocket* ws_srv, AsyncWebSocketClient* cli, AwsEventType type, void* arg, uint8_t* data, size_t len) {
       switch (type) {
         case WS_EVT_CONNECT:

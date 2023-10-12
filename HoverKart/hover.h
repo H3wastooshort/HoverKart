@@ -49,6 +49,8 @@ class hover_c final : public component {
   void tcmd_to_cmd(tank_command& tcmd, hover_command& cmd, bool invert) {
     cmd.left = tcmd.left * MAX_SPEED;
     cmd.right = tcmd.right * MAX_SPEED;
+    constrain(tcmd.left, -MAX_SPEED, MAX_SPEED);
+    constrain(tcmd.right, -MAX_SPEED, MAX_SPEED);
     if (invert) {
       tcmd.left *= -1;
       tcmd.right *= -1;
