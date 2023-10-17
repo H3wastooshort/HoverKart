@@ -32,5 +32,10 @@ tank_command vec_to_tank(vector_command vcmd) {
     tcmd.right = magnitude + (magnitude * 2 * vcmd.steer);
   }
 
+  if (vcmd.speed < 0) {
+    tcmd.left = -tcmd.left;
+    tcmd.right = -tcmd.right;
+  }
+
   return tcmd;
 }
