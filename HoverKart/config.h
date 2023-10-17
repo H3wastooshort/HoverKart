@@ -1,13 +1,13 @@
 //Debug UART      RX, TX
 #define SERd_PINS RX, TX
-#define SERd_BAUD 57600
+#define SERd_BAUD 9600
 //Hoverboard UART RX, TX
 #define SER0_PINS 27, 25
 #define SER1_PINS 18, 19
 #define SER2_PINS 23, 5
 #define MAX_SPEED 10
-#define INVERT_AXIS_1 true
-#define INVERT_AXIS_2 true
+#define INVERT_AXIS_1 false
+#define INVERT_AXIS_2 false
 #define INVERT_AXIS_3 false 
 //I2C            SDA,SCL
 #define I2C_PINS  21, 22

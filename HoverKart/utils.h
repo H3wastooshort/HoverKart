@@ -24,17 +24,22 @@ tank_command vec_to_tank(vector_command vcmd) {
 
   float magnitude = (std::sqrt(std::pow(vcmd.speed, 2.0) + std::pow(vcmd.steer, 2.0)));
 
-  if (vcmd.steer > 0) {
-    tcmd.left = magnitude - (magnitude * 2 * vcmd.steer);
-    tcmd.right = magnitude;
-  } else {
-    tcmd.left = magnitude;
-    tcmd.right = magnitude + (magnitude * 2 * vcmd.steer);
-  }
-
   if (vcmd.speed < 0) {
-    tcmd.left = -tcmd.left;
-    tcmd.right = -tcmd.right;
+    if (vcmd.steer > 0) {
+      tcmd.left = -magnitude;
+      tcmd.right = -magnitude + (magnitude * 2 * vcmd.steer);
+    } else {
+      tcmd.left = -magnitude - (magnitude * 2 * vcmd.steer);
+      tcmd.right = -magnitude;
+    }
+  } else {
+    if (vcmd.steer > 0) {
+      tcmd.left = magnitude - (magnitude * 2 * vcmd.steer);
+      tcmd.right = magnitude;
+    } else {
+      tcmd.left = magnitude;
+      tcmd.right = magnitude + (magnitude * 2 * vcmd.steer);
+    }
   }
 
   return tcmd;

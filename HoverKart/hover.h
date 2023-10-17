@@ -100,7 +100,9 @@ public:
       last_ctrl_millis = millis();
       tank_command tcmd = inputs.get_current();
       send(tcmd);
+      logger.log(this, 'D', String(ESP.getFreeHeap()).c_str());
     }
+
 
     /*receive();
     static uint64_t last_info_millis = 0;
