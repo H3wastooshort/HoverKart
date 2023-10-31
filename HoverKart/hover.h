@@ -51,7 +51,7 @@ class hover_c final : public component {
     cmd.right = tcmd.right * MAX_SPEED;
     constrain(tcmd.left, -MAX_SPEED, MAX_SPEED);
     constrain(tcmd.right, -MAX_SPEED, MAX_SPEED);
-    if (invert) {
+    if (invert and (std::signbit(tcmd.left)==std::signbit(tcmd.right))) {
       tcmd.left *= -1;
       tcmd.right *= -1;
     }

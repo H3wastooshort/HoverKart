@@ -2,6 +2,8 @@
 #include <vector>
 #include <memory>
 #include <cmath>
+#include "soc/soc.h"
+#include "soc/rtc_cntl_reg.h"
 
 //components
 #include "types.h"
@@ -19,6 +21,8 @@
 //#include "wifi_control.h"
 
 void setup() {
+  WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);
+
   //only registers components
   components.activate(&debug_serial);
   components.activate(&hover);
